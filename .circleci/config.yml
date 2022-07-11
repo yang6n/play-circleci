@@ -1,28 +1,24 @@
+# CircleCI configuration file
 version: 2.1
 
-executors:
-  linux-13:
-    docker:
-      - image: cimg/node:13.13
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-
 jobs:
-  test:
-    parameters:
-      os:
-        type: executor
-      node-version:
-        type: string
-    executor: << parameters.os >>
+  # Job one with a unique name
+  say_hello:
+    docker:
+     - image: cimg/base:2022.05
     steps:
-      - checkout
-      - run: echo 0
+      - run: echo "Say hello to YAML!"
+  # Job two with a unique name
+  say_goodbye:
+    docker:
+     - image: cimg/base:2022.05
+    steps:
+      - run: echo "Say goodbye to YAML!"
 
 workflows:
-  my-workflow:
-      when:
-        or:
-          - equal: [ main, << pipeline.git.branch >> ]
-          - equal: [ staging, << pipeline.git.branch >> ]
+  # Name of workflow
+  hello_and_goodbye:
+    # List of jobs that will run
+    jobs:
+      - say_hello
+      - say_goodbye
