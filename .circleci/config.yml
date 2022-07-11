@@ -18,11 +18,6 @@ jobs:
     executor: << parameters.os >>
     steps:
       - checkout
-      - when:
-          condition:
-            equal: [ *macos-executor, << parameters.os >> ]
-          steps:
-            - run: echo << parameters.node-version >>
       - run: echo 0
 
 workflows:
