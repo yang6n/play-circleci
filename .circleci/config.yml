@@ -1,4 +1,30 @@
----
+version: 2.1
+
+executors:
+  linux-13:
+    docker:
+      - image: cimg/node:13.13
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+
+jobs:
+  test:
+    parameters:
+      os:
+        type: executor
+      node-version:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - checkout
+      - when:
+          condition:
+            equal: [ *macos-executor, << parameters.os >> ]
+          steps:
+            - run: echo << parameters.node-version >>
+      - run: echo 0
+
 workflows:
   my-workflow:
       when:
